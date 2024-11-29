@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>My Trips</h2>
+  <ul>
+    {% for trip in trips %}
+      <li><a href="{% url 'trip_detail' trip.id %}">{{ trip.name }}</a></li>
+    {% empty %}
+      <li>No trips yet.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

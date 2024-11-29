@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>{{ trip.name }}</h2>
+  <p>From {{ trip.start_date }} to {{ trip.end_date }}</p>
+  
+  <h3>Destinations</h3>
+  <ul>
+    {% for destination in destinations %}
+      <li>{{ destination.name }} ({{ destination.arrival_date }} - {{ destination.departure_date }})</li>
+    {% empty %}
+      <li>No destinations added yet.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
