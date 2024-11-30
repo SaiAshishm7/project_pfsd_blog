@@ -1,60 +1,150 @@
 {% extends "base.html" %}
 
-{% block head_title %}{% if update %}Update post{% else %}Create a post{% endif %}{% endblock head_title %}
+{% block head_title %}{% if update %}Update Post{% else %}Create New Post{% endif %}{% endblock head_title %}
 
 {% block content %}
-<div class="container">
-  <div class="row">
-    <div class="col-8 offset-2">
-      <h2 class=" my-5">{% if update %}Update post{% else %}Create a post{% endif %}</h2>
-      <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+      <div class="post-form-wrapper">
+        <div class="post-form-container">
+          <h1 class="mb-5 text-center">
+            {% if update %}Update Your Post{% else %}Create a New Post{% endif %}
+          </h1>
+          
+          <form method="post" enctype="multipart/form-data" class="elegant-form">
+            {% csrf_token %}
 
-        <div class="form-group">
-          {{ form.title.label_tag }}
-          <input type="text" class="form-control {% if form.title.errors %}is-invalid{% endif %}" id="id_title"
-            name="title" value='{{ form.title.value|default:"" }}'>
-          {% if form.title.errors %}
-          <div class="invalid-feedback">{{ form.title.errors }}</div>
-          {% endif %}
+            <div class="form-floating mb-4">
+              <input type="text" 
+                     class="form-control form-control-lg {% if form.title.errors %}is-invalid{% endif %}" 
+                     id="id_title"
+                     name="title" 
+                     placeholder="Post Title"
+                     value='{{ form.title.value|default:"" }}'
+                     required>
+              <label for="id_title" class="form-label">Post Title</label>
+              {% if form.title.errors %}
+              <div class="invalid-feedback">
+                {{ form.title.errors }}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="form-floating mb-4">
+              <textarea class="form-control form-control-lg {% if form.content.errors %}is-invalid{% endif %}" 
+                        id="id_content"
+                        name="content" 
+                        placeholder="Write your post content"
+                        style="height: 200px;"
+                        required>{{ form.content.value|default:"" }}</textarea>
+              <label for="id_content">Post Content</label>
+              {% if form.content.errors %}
+              <div class="invalid-feedback">
+                {{ form.content.errors }}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="mb-4">
+              <label for="id_image" class="form-label">Featured Image</label>
+              <input type="file" 
+                     class="form-control form-control-lg {% if form.image.errors %}is-invalid{% endif %}" 
+                     id="id_image" 
+                     name="image"
+                     accept="image/*">
+              {% if form.image.errors %}
+              <div class="invalid-feedback">
+                {{ form.image.errors }}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="mb-4">
+              <label for="id_tags" class="form-label">Select Tags</label>
+              <select class="form-select form-select-lg" 
+                      name="tags" 
+                      id="id_tags" 
+                      multiple 
+                      aria-label="Select tags">
+                {% for name, value in form.tags.field.choices %}
+                <option value="{{ name }}">{{ value }}</option>
+                {% endfor %}
+              </select>
+              {% if form.tags.errors %}
+              <div class="invalid-feedback">
+                {{ form.tags.errors }}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary btn-lg">
+                {% if update %}Update Post{% else %}Publish Post{% endif %}
+              </button>
+            </div>
+          </form>
         </div>
-
-        <div class="form-group">
-          {{ form.content.label_tag }}
-          <textarea type="text" class="form-control {% if form.content.errors %}is-invalid{% endif %}" id="id_content"
-            name="content" cols="40" rows="10">{{ form.content.value|default:"" }}</textarea>
-          {% if form.content.errors %}
-          <div class="invalid-feedback">{{ form.content.errors }}</div>
-          {% endif %}
-        </div>
-
-        <div class="form-group">
-          {{ form.image.label_tag }}<br>
-          <input type="file" class="{% if form.image.errors %}is-invalid{% endif %}" id="id_image" name="image"
-            accept="image/*">
-          {% if form.image.errors %}
-          <div class="invalid-feedback">{{ form.image.errors }}</div>
-          {% endif %}
-        </div>
-
-        <div class="form-group">
-          {{ form.tags.label_tag }}<br>
-          <select class="custom-select w-25" name="tags" id="id_tags" multiple>
-            {% for name, value in form.tags.field.choices %}
-            <option value="{{ name }}">{{ value }}</option>
-            {% endfor %}
-          </select>
-          {% if form.tags.errors %}
-          <div class="invalid-feedback">{{ form.tags.errors }}</div>
-          {% endif %}
-        </div>
-
-        <button type="submit" class="btn btn-primary">
-          {% if update %}Update the post{% else %}Create a post{% endif %}
-        </button>
-      </form>
-
+      </div>
     </div>
   </div>
 </div>
+
+<style>
+.post-form-wrapper {
+  background-color: #f8f9fa;
+  border-radius: 16px;
+  padding: 20px;
+  border: 2px solid #e9ecef;
+}
+
+.post-form-container {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid #dee2e6;
+}
+
+.elegant-form .form-control,
+.elegant-form .form-select {
+  border: 2px solid #ced4da;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.elegant-form .form-control:focus,
+.elegant-form .form-select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.1);
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+h1 {
+  color: #333;
+  font-weight: 600;
+  letter-spacing: -1px;
+}
+
+@media (max-width: 768px) {
+  .post-form-wrapper {
+    padding: 10px;
+  }
+  
+  .post-form-container {
+    padding: 20px;
+  }
+}
+</style>
 {% endblock content %}
