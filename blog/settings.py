@@ -32,7 +32,7 @@ if os.environ.get('ENV') == 'PRODUCTION':
 else:
     DEBUG = True
 
-ALLOWED_HOSTS = ["django-blog-rouizi.herokuapp.com",'127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ["project-pfsd.onrender.com",'127.0.0.1', 'localhost']
 
 
 # Application definition
