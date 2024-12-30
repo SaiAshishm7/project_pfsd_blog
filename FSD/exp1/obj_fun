@@ -1,0 +1,11 @@
+let user={
+    name: "cyrus",
+    age:"18", 
+}
+function sayHi(){
+    console.log("Hello",this.name);
+}
+
+user.sayHi=sayHi;
+
+user.sayHi();
